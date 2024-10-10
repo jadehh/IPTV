@@ -18,8 +18,7 @@ class PanelPage extends StatefulWidget {
 
 class _PanelPageState extends State<PanelPage> {
 
-  static IptvStore get iptvStore => Get.find<IptvStore>();
-  static PlayerStore get playerStore => Get.find<PlayerStore>();
+  static IptvController get iptvController => Get.find<IptvController>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class _PanelPageState extends State<PanelPage> {
       right: 20.w,
       child: Row(
         children: [
-          Obx(() => PanelIptvChannel(iptvStore.currentIptv.channel.toString().padLeft(2, '0')),
+          Obx(() => PanelIptvChannel(iptvController.currentIptv.value.channel.toString().padLeft(2, '0')),
           ),
           // 分隔符
           Padding(
@@ -47,7 +46,7 @@ class _PanelPageState extends State<PanelPage> {
               height: 50.w,
               child: VerticalDivider(
                 thickness: 2.w,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -68,9 +67,9 @@ class _PanelPageState extends State<PanelPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PanelIptvInfo(),
+            const PanelIptvInfo(),
             SizedBox(height: 30.h),
-            PanelPlayerInfo(),
+            const PanelPlayerInfo(),
             SizedBox(height: 30.h),
             const PanelIptvList(),
           ].delayed(enable: DebugSettings.delayRender),

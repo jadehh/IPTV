@@ -23,12 +23,14 @@ Widget buildControls( bool isPortrait, VideoState videoState,){
           child: StreamBuilder(
             stream: videoState.widget.controller.player.stream.buffering,
             initialData: videoState.widget.controller.player.state.buffering,
-            builder: (_, s) => Visibility(
-              visible: s.data ?? false,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+            builder: (_, s){
+              return Visibility(
+                visible: s.data ?? false,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
           ),
         ),
   ]);

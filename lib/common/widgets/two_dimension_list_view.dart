@@ -113,17 +113,17 @@ class _TwoDimensionListViewState extends State<TwoDimensionListView> {
     _horizontalScrollController =
         ScrollController(initialScrollOffset: _getHorizontalScrollOffset(widget.initialPosition.col));
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _verticalScrollController.jumpTo(_getVerticalScrollOffset(widget.initialPosition.row).clamp(
-    //     _verticalScrollController.position.minScrollExtent,
-    //     _verticalScrollController.position.maxScrollExtent,
-    //   ));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _verticalScrollController.jumpTo(_getVerticalScrollOffset(widget.initialPosition.row).clamp(
+        _verticalScrollController.position.minScrollExtent,
+        _verticalScrollController.position.maxScrollExtent,
+      ));
 
-    //   _horizontalScrollController.jumpTo(_getHorizontalScrollOffset(widget.initialPosition.col).clamp(
-    //     _horizontalScrollController.position.minScrollExtent,
-    //     _horizontalScrollController.position.maxScrollExtent,
-    //   ));
-    // });
+      _horizontalScrollController.jumpTo(_getHorizontalScrollOffset(widget.initialPosition.col).clamp(
+        _horizontalScrollController.position.minScrollExtent,
+        _horizontalScrollController.position.maxScrollExtent,
+      ));
+    });
   }
 
   @override

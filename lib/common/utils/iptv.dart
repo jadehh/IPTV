@@ -1,7 +1,4 @@
 import 'dart:io';
-
-import 'package:get/get.dart';
-import 'package:get/get_common/get_reset.dart';
 import 'package:iptv/common/index.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,7 +27,7 @@ class IptvUtil {
 
   /// 获取缓存直播源文件
   static Future<File> _getCacheFile() async {
-    return File('${(await getTemporaryDirectory()).path}/iptv.txt');
+    return File('${(await getApplicationCacheDirectory()).path}/iptv.txt');
   }
 
   /// 获取缓存直播源
@@ -74,10 +71,10 @@ class IptvUtil {
       });
       channel = channel + 1;
       final iptv = Iptv(
-        idx: group.list.length.obs,
-        channel: channel.obs,
-        groupIdx: group.idx.obs,
-        name: name.obs,
+        idx: group.list.length,
+        channel: channel,
+        groupIdx: group.idx,
+        name: name,
         url: lines[lineIdx + 1],
         tvgName: RegExp('tvg-name="(.*?)"').firstMatch(line)?.group(1) ?? name,
       );
@@ -120,10 +117,10 @@ class IptvUtil {
         final url = newLine.split(',')[1];
         channel = channel +  1;
         final iptv = Iptv(
-          idx: group!.list.length.obs,
-          channel:channel.obs,
-          groupIdx: group.idx.obs,
-          name: name.obs,
+          idx: group!.list.length,
+          channel:channel,
+          groupIdx: group.idx,
+          name: name,
           url: url,
           tvgName: name,
         );

@@ -30,7 +30,7 @@ class EpgUtil {
 
   /// 获取缓存epg xml文件
   static Future<File> _getCacheXmlFile() async {
-    return File('${(await getTemporaryDirectory()).path}/epg.xml');
+    return File('${(await getApplicationCacheDirectory()).path}/epg.xml');
   }
 
   /// 获取缓存epg xml
@@ -141,7 +141,7 @@ class EpgUtil {
 
   /// 获取缓存文件
   static Future<File> _getCacheFile() async {
-    return File('${(await getTemporaryDirectory()).path}/epg.json');
+    return File('${(await getApplicationCacheDirectory()).path}/epg.json');
   }
 
   /// 获取缓存epg

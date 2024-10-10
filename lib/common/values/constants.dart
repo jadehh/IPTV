@@ -1,7 +1,7 @@
 /// 常量
 class Constants {
   /// 直播源
-  static const iptvSource = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/zhumeng11/IPTV/main/IPTV.m3u';
+  static const iptvSource = 'https://ghp.ci/https://raw.githubusercontent.com/zhumeng11/IPTV/main/IPTV.m3u';
 
   /// 直播源缓存时间
   static const iptvSourceCacheKeepTime = 1000 * 60 * 60 * 24; // 24小时

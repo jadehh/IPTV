@@ -4,11 +4,10 @@ import 'package:get/get.dart';
 import 'package:iptv/common/index.dart';
 
 class PanelIptvInfo extends StatelessWidget {
-  PanelIptvInfo({this.epgShowFull = true, super.key});
-
-  late final bool epgShowFull;
-  static IptvStore get iptvStore => Get.find<IptvStore>();
-  static PlayerStore get playerStore => Get.find<PlayerStore>();
+  final bool epgShowFull;
+  const PanelIptvInfo({this.epgShowFull = true, super.key});
+  static IptvController get iptvController => Get.find<IptvController>();
+  static PlayController get playController => Get.find<PlayController>();
 
 
   @override
@@ -20,9 +19,9 @@ class PanelIptvInfo extends StatelessWidget {
           children: [
             // 频道名称
             Obx(() => Text(
-                iptvStore.currentIptv.name.value,
+              iptvController.currentIptv.value.name,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 60.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -31,7 +30,7 @@ class PanelIptvInfo extends StatelessWidget {
             SizedBox(width: 40.w),
             // 播放状态
             Obx(() => Text(
-                playerStore.state == PlayerState.failed ? '播放失败' : '',
+                playController.state.value == PlayerState.failed ? '播放失败' : '',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.error,
                   fontSize: 60.sp,
@@ -45,9 +44,9 @@ class PanelIptvInfo extends StatelessWidget {
         Obx( () => ConstrainedBox(
             constraints: BoxConstraints(maxWidth: epgShowFull ? 1.sw : 500.w),
             child: Text(
-              '正在播放：${iptvStore.currentIptvProgrammes.current.value.isNotEmpty ? iptvStore.currentIptvProgrammes.current.value : '无节目'}',
+              '正在播放：${iptvController.currentIptvProgrammes.current.value.isNotEmpty ? iptvController.currentIptvProgrammes.current.value : '无节目'}',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 fontSize: 30.sp,
               ),
               maxLines: 1,
@@ -58,9 +57,9 @@ class PanelIptvInfo extends StatelessWidget {
         Obx( () => ConstrainedBox(
             constraints: BoxConstraints(maxWidth: epgShowFull ? 1.sw : 500.w),
             child: Text(
-              '稍后播放：${iptvStore.currentIptvProgrammes.next.value.isNotEmpty ? iptvStore.currentIptvProgrammes.next.value : '无节目'}',
+              '稍后播放：${iptvController.currentIptvProgrammes.next.value.isNotEmpty ? iptvController.currentIptvProgrammes.next.value : '无节目'}',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 fontSize: 30.sp,
               ),
               maxLines: 1,

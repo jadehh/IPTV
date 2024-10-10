@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iptv/common/index.dart';
-
-import 'package:get/get.dart';
 import 'package:iptv/pages/settings/widgets/app_info.dart';
 import 'package:iptv/pages/settings/widgets/settings.dart';
 
@@ -14,9 +11,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  static PlayerStore get playerStore => Get.find<PlayerStore>();
-  static IptvStore get iptvStore => Get.find<IptvStore>();
-  static UpdateStore get updateStore => Get.find<UpdateStore>();
+
 
   @override
   void initState() {

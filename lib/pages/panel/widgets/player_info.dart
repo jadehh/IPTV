@@ -6,15 +6,15 @@ import 'package:iptv/common/index.dart';
 class PanelPlayerInfo extends StatelessWidget {
   const PanelPlayerInfo({super.key});
 
-  static PlayerStore get playerStore => Get.find<PlayerStore>();
+  static PlayController get playController => Get.find<PlayController>();
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Obx( () => Text(
-            '分辨率：${playerStore.width.value}×${playerStore.height.value}',
-            style: TextStyle(color: Theme.of(context).colorScheme.onBackground, fontSize: 30.sp),
+            '分辨率：${playController.width.value}×${playController.height.value}',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30.sp),
           ),
         )
       ],

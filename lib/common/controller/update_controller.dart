@@ -1,4 +1,13 @@
+/*
+ * @File     : update_controller.dart
+ * @Author   : jade
+ * @Date     : 2024/10/10 16:49
+ * @Email    : jadehh@1ive.com
+ * @Software : Samples
+ * @Desc     :
+ */
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:iptv/common/index.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -26,7 +35,7 @@ int _compareVersions(String version1, String version2) {
 
 final _logger = LoggerUtil.create(['更新']);
 
- class UpdateStore  {
+class UpdateController extends GetxController  {
   /// 当前版本
   String currentVersion = '0.0.0';
 
@@ -61,6 +70,8 @@ final _logger = LoggerUtil.create(['更新']);
       if (hasUpdate && AppSettings.lastLatestVersion != latestRelease.tagName) {
         showToast('发现新版本: ${latestRelease.tagName}');
         AppSettings.lastLatestVersion = latestRelease.tagName;
+      }else{
+        _logger.debug("当前版本已是最新版本:${AppSettings.lastLatestVersion}");
       }
     } catch (e, st) {
       _logger.handle(e, st);
@@ -77,11 +88,10 @@ final _logger = LoggerUtil.create(['更新']);
     updating = true;
     _logger.debug('正在下载更新: ${latestRelease.tagName}');
     showToast('正在下载更新: ${latestRelease.tagName}', duration: const Duration(seconds: 10));
-
     try {
       final path = await RequestUtil.download(
         url: '${Constants.githubProxy}${latestRelease.downloadUrl}',
-        directory: (await getTemporaryDirectory()).path,
+        directory: (await getApplicationCacheDirectory()).path,
         name: 'my_tv-latest.apk',
         onProgress: (percent) {
           _logger.debug('正在下载更新: ${percent.toInt()}%');

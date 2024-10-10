@@ -35,11 +35,10 @@ void main() async {
   LoggerUtil.init();
   RequestUtil.init();
 
-  // 注册全局Store
-  Get.put(PlayerStore());
-  Get.put(IptvStore());
-  Get.put(UpdateStore());
-
+  // 注册全局Controller
+  Get.put(PlayController());
+  Get.put(IptvController());
+  Get.put(UpdateController());
 
   runApp(const MyApp());
 }
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const colorScheme = ColorScheme.dark(background: Colors.black);
+    const colorScheme = ColorScheme.dark(surface: Colors.black);
 
     return ScreenUtilInit(
       designSize: const Size(1920, 1080),

@@ -22,10 +22,13 @@ class NavigatorUtil {
         },
         pageBuilder: (context, _, __) {
           return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background.withOpacity(0.5),
+            backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
             body: SafeArea(
               child: GestureDetector(
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  // 恢复
+                  Navigator.pop(context);
+                },
                 child: Container(
                   color: Colors.transparent,
                   child: page,

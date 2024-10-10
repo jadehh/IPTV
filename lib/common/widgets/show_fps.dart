@@ -89,7 +89,7 @@ class _ShowFPSState extends State<ShowFPS> {
           width: chartWidth + 17,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background.withOpacity(0.8),
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: Column(
@@ -99,7 +99,7 @@ class _ShowFPSState extends State<ShowFPS> {
                 Text(
                   'FPS: ${getAvgFPS()}',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 14,
                   ),
                 ),

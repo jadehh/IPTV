@@ -1,10 +1,17 @@
+/*
+ * @File     : iptv_controller.dart
+ * @Author   : jade
+ * @Date     : 2024/10/10 16:03
+ * @Email    : jadehh@1ive.com
+ * @Software : Samples
+ * @Desc     :
+ */
 import 'dart:async';
-import 'package:iptv/common/index.dart';
+
 import 'package:get/get.dart';
+import 'package:iptv/common/index.dart';
 
-
-
- class IptvStore  {
+class IptvController extends GetxController {
   /// 直播源分组列表
   List<IptvGroup> iptvGroupList = [];
 
@@ -12,7 +19,7 @@ import 'package:get/get.dart';
   List<Iptv> get iptvList => iptvGroupList.expand((e) => e.list).toList();
 
   /// 当前直播源
-  Iptv currentIptv = Iptv.empty;
+  Rx<Iptv> currentIptv = Iptv.empty.obs;
 
   /// 显示iptv信息
   RxBool iptvInfoVisible = false.obs;
@@ -28,25 +35,25 @@ import 'package:get/get.dart';
 
   /// 获取上一个直播源
   Iptv getPrevIptv([Iptv? iptv]) {
-    final prevIdx = iptvList.indexOf(iptv ?? currentIptv) - 1;
+    final prevIdx = iptvList.indexOf(iptv ?? currentIptv.value) - 1;
     return prevIdx < 0 ? iptvList.last : iptvList.elementAt(prevIdx);
   }
 
   /// 获取下一个直播源
   Iptv getNextIptv([Iptv? iptv]) {
-    final nextIdx = iptvList.indexOf(iptv ?? currentIptv) + 1;
+    final nextIdx = iptvList.indexOf(iptv ?? currentIptv.value) + 1;
     return nextIdx >= iptvList.length ? iptvList.first : iptvList.elementAt(nextIdx);
   }
 
   /// 获取上一个分组直播源
   Iptv getPrevGroupIptv([Iptv? iptv]) {
-    final prevIdx = (iptv?.groupIdx.value ?? currentIptv.groupIdx.value) - 1;
+    final prevIdx = (iptv?.groupIdx ?? currentIptv.value.groupIdx) - 1;
     return prevIdx < 0 ? iptvGroupList.last.list.first : iptvGroupList.elementAt(prevIdx).list.first;
   }
 
   /// 获取下一个分组直播源
   Iptv getNextGroupIptv([Iptv? iptv]) {
-    final nextIdx = (iptv?.groupIdx.value ?? currentIptv.groupIdx.value) + 1;
+    final nextIdx = (iptv?.groupIdx ?? currentIptv.value.groupIdx) + 1;
     return nextIdx >= iptvGroupList.length ? iptvGroupList.first.list.first : iptvGroupList.elementAt(nextIdx).list.first;
   }
 
@@ -67,8 +74,8 @@ import 'package:get/get.dart';
     channelNo.value = channelNo.value + no;
     confirmChannelTimer = Timer(Duration(seconds: 4 - channelNo.value.length), () {
       final channel = int.tryParse(channelNo.value) ?? 0;
-      final iptv = iptvList.firstWhere((e) => e.channel.value == channel, orElse: () => currentIptv);
-      currentIptv = iptv;
+      final iptv = iptvList.firstWhere((e) => e.channel == channel, orElse: () => currentIptv.value);
+      currentIptv = iptv.obs;
       channelNo = ''.obs;
     });
   }
@@ -86,6 +93,6 @@ import 'package:get/get.dart';
   }
 
   ({RxString current, RxString next}) get currentIptvProgrammes {
-    return getIptvProgrammes(currentIptv);
+    return getIptvProgrammes(currentIptv.value);
   }
 }

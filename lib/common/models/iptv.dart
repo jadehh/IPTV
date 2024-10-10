@@ -1,18 +1,16 @@
-import 'package:get/get.dart';
-
 /// 直播源
 class Iptv {
   /// 序号
-  late final RxInt idx;
+  late final int idx;
 
   /// 频道号
-  late final RxInt channel;
+  late final int channel;
 
   /// 所属分组
-  late final RxInt groupIdx;
+  late final int groupIdx;
 
   /// 名称
-  late final RxString name;
+  late final String name;
 
   /// 播放地址
   late final String url;
@@ -34,7 +32,7 @@ class Iptv {
     return 'Iptv{idx: $idx, channel: $channel, groupIdx: $groupIdx, name: $name, url: $url, tvgName: $tvgName}';
   }
 
-  static Iptv get empty => Iptv(idx: 0.obs, channel: 0.obs, groupIdx: 0.obs, name: ''.obs, url: '', tvgName: '');
+  static Iptv get empty => Iptv(idx: 0, channel: 0, groupIdx: 0, name: '', url: '', tvgName: '');
 }
 
 /// 直播源分组

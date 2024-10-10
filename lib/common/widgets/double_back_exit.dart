@@ -18,7 +18,7 @@ class _DoubleBackExitState extends State<DoubleBackExit> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           return;
         } else {
@@ -27,7 +27,6 @@ class _DoubleBackExitState extends State<DoubleBackExit> {
             showToast('再按一次退出', duration: const Duration(seconds: 2));
             return;
           }
-
           SystemNavigator.pop();
         }
       },

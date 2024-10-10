@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:iptv/common/index.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsAppInfo extends StatefulWidget {
@@ -12,13 +11,12 @@ class SettingsAppInfo extends StatefulWidget {
 }
 
 class _SettingsAppInfoState extends State<SettingsAppInfo> {
-  static UpdateStore get updateStore => Get.find<UpdateStore>();
-  var _version = '';
+  final _version = ''.obs;
 
   _initData() async {
     final packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      _version = packageInfo.version;
+      _version.value = packageInfo.version;
     });
   }
 
@@ -40,7 +38,7 @@ class _SettingsAppInfoState extends State<SettingsAppInfo> {
             Text(
               '我的电视',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 60.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -49,7 +47,7 @@ class _SettingsAppInfoState extends State<SettingsAppInfo> {
             Obx( () => Text(
                 'v$_version',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                   fontSize: 30.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -58,9 +56,9 @@ class _SettingsAppInfoState extends State<SettingsAppInfo> {
           ],
         ),
         Text(
-          'https://github.com/yaoxieyoulei/my_tv',
+          'https://github.com/jadehh/IPTV',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
             fontSize: 30.sp,
           ),
         ),

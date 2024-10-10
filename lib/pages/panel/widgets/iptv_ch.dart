@@ -11,7 +11,7 @@ class PanelIptvChannel extends StatelessWidget {
     return Text(
       channel,
       style: TextStyle(
-        color: Theme.of(context).colorScheme.onBackground,
+        color: Theme.of(context).colorScheme.onSurface,
         fontSize: 90.sp,
         height: 1,
       ),

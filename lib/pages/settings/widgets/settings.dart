@@ -38,8 +38,8 @@ class SettingsMain extends StatefulWidget {
 }
 
 class _SettingsMainState extends State<SettingsMain> {
-  static IptvStore get iptvStore => Get.find<IptvStore>();
-  static UpdateStore get updateStore => Get.find<UpdateStore>();
+  static IptvController get iptvController => Get.find<IptvController>();
+  static UpdateController get updateController => Get.find<UpdateController>();
 
 
   late final List<SettingItem> _settingItemList;
@@ -60,7 +60,7 @@ class _SettingsMainState extends State<SettingsMain> {
       Center(
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onBackground,
+            color: Theme.of(context).colorScheme.onSurface,
             borderRadius: BorderRadius.circular(20).r,
           ),
           child: Padding(
@@ -72,7 +72,7 @@ class _SettingsMainState extends State<SettingsMain> {
                 data: HttpServerUtil.serverUrl,
                 decoration: PrettyQrDecoration(
                   shape: PrettyQrSmoothSymbol(
-                    color: Theme.of(context).colorScheme.background,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
                 ),
               ),
@@ -123,8 +123,8 @@ class _SettingsMainState extends State<SettingsMain> {
       padding: const EdgeInsets.all(30).r,
       decoration: BoxDecoration(
         color: isSelected
-            ? Theme.of(context).colorScheme.onBackground
-            : Theme.of(context).colorScheme.background.withOpacity(0.8),
+            ? Theme.of(context).colorScheme.onSurface
+            : Theme.of(context).colorScheme.surface.withOpacity(0.8),
         borderRadius: BorderRadius.circular(20).r,
       ),
       child: Column(
@@ -138,8 +138,8 @@ class _SettingsMainState extends State<SettingsMain> {
                 item.title,
                 style: TextStyle(
                   color: isSelected
-                      ? Theme.of(context).colorScheme.background
-                      : Theme.of(context).colorScheme.onBackground,
+                      ? Theme.of(context).colorScheme.surface
+                      : Theme.of(context).colorScheme.onSurface,
                   fontSize: 30.sp,
                 ),
               ),
@@ -147,8 +147,8 @@ class _SettingsMainState extends State<SettingsMain> {
                 item.value(),
                 style: TextStyle(
                   color: isSelected
-                      ? Theme.of(context).colorScheme.background
-                      : Theme.of(context).colorScheme.onBackground,
+                      ? Theme.of(context).colorScheme.surface
+                      : Theme.of(context).colorScheme.onSurface,
                   fontSize: 30.sp,
                 ),
               ),
@@ -157,7 +157,7 @@ class _SettingsMainState extends State<SettingsMain> {
           Text(
             item.description(),
             style: TextStyle(
-              color: isSelected ? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.onBackground,
+              color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onSurface,
               fontSize: 24.sp,
             ),
             maxLines: 2,
@@ -173,23 +173,23 @@ class _SettingsMainState extends State<SettingsMain> {
       SettingGroup(name: '应用', items: [
         SettingItem(
           title: '应用更新',
-          value: () => updateStore.hasUpdate ? '新版本' : '无更新',
-          description: () => '最新版本：${updateStore.latestRelease.tagName} ${updateStore.hasUpdate ? '（长按更新）' : ''}',
+          value: () => updateController.hasUpdate ? '新版本' : '无更新',
+          description: () => '最新版本：${updateController.latestRelease.tagName} ${updateController.hasUpdate ? '（长按更新）' : ''}',
           onTap: () {
-            if (updateStore.hasUpdate) {
+            if (updateController.hasUpdate) {
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: Text(updateStore.latestRelease.tagName),
+                  title: Text(updateController.latestRelease.tagName),
                   content: SingleChildScrollView(
-                    child: Text(updateStore.latestRelease.description),
+                    child: Text(updateController.latestRelease.description),
                   ),
                 ),
               );
             }
           },
           onLongTap: () {
-            updateStore.downloadAndInstall();
+            updateController.downloadAndInstall();
           },
         ),
         SettingItem(
@@ -219,7 +219,7 @@ class _SettingsMainState extends State<SettingsMain> {
           onTap: () {
             IptvSettings.iptvSourceSimplify = !IptvSettings.iptvSourceSimplify;
             IptvSettings.epgCacheHash = 0;
-            iptvStore.refreshIptvList().then((_) => setState(() {}));
+            iptvController.refreshIptvList().then((_) => setState(() {}));
           },
         ),
         SettingItem(
@@ -230,7 +230,7 @@ class _SettingsMainState extends State<SettingsMain> {
           onLongTap: () {
             IptvSettings.customIptvSource = '';
             IptvSettings.iptvSourceCacheTime = 0;
-            iptvStore.refreshIptvList().then((_) => setState(() {}));
+            iptvController.refreshIptvList().then((_) => setState(() {}));
           },
         ),
         SettingItem(
@@ -240,7 +240,7 @@ class _SettingsMainState extends State<SettingsMain> {
           onTap: () {
             if (IptvSettings.iptvSourceCacheTime > 0) {
               IptvSettings.iptvSourceCacheTime = 0;
-              iptvStore.refreshIptvList().then((_) => setState(() {}));
+              iptvController.refreshIptvList().then((_) => setState(() {}));
             }
           },
         ),
@@ -252,7 +252,7 @@ class _SettingsMainState extends State<SettingsMain> {
           description: () => '首次加载时可能会有跳帧风险',
           onTap: () {
             IptvSettings.epgEnable = !IptvSettings.epgEnable;
-            iptvStore.refreshEpgList().then((_) => setState(() {}));
+            iptvController.refreshEpgList().then((_) => setState(() {}));
           },
         ),
         SettingItem(
@@ -264,7 +264,7 @@ class _SettingsMainState extends State<SettingsMain> {
             IptvSettings.customEpgXml = '';
             IptvSettings.epgXmlCacheTime = 0;
             IptvSettings.epgCacheHash = 0;
-            iptvStore.refreshEpgList().then((_) => setState(() {}));
+            iptvController.refreshEpgList().then((_) => setState(() {}));
           },
         ),
         SettingItem(
@@ -275,7 +275,7 @@ class _SettingsMainState extends State<SettingsMain> {
             if (IptvSettings.epgXmlCacheTime > 0) {
               IptvSettings.epgXmlCacheTime = 0;
               IptvSettings.epgCacheHash = 0;
-              iptvStore.refreshEpgList().then((_) => setState(() {}));
+              iptvController.refreshEpgList().then((_) => setState(() {}));
             }
           },
         ),
