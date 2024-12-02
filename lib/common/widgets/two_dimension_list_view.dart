@@ -184,8 +184,7 @@ class _TwoDimensionListViewState extends State<TwoDimensionListView> {
             _changePosition(row: row, col: index);
             widget.onLongSelect?.call((row: row, col: index));
           },
-          child: SizedBox(
-            width: widget.size.colWidth,
+          child: widget.size.colWidth == 0? SizedBox(
             child: widget
                 .itemBuilder(
                   context,
@@ -193,8 +192,16 @@ class _TwoDimensionListViewState extends State<TwoDimensionListView> {
                   row == _position.row && index == _position.col,
                 )
                 .delayed(enable: DebugSettings.delayRender),
-          ),
-        );
+          ):SizedBox(
+        width: widget.size.colWidth,
+        child: widget
+            .itemBuilder(
+        context,
+        (row: row, col: index),
+        row == _position.row && index == _position.col,
+        )
+            .delayed(enable: DebugSettings.delayRender),
+        ));
       },
     );
   }
@@ -231,6 +238,11 @@ class _TwoDimensionListViewState extends State<TwoDimensionListView> {
             _changePosition(row: _position.row, col: _position.col + 1);
           } else {
             _changePosition(row: _position.row, col: 0);
+          }
+        },
+        LogicalKeyboardKey.enter:(){
+          if (_position.row >= 0 && _position.col >= 0) {
+            widget.onSelect?.call(_position);
           }
         },
         LogicalKeyboardKey.select: () {

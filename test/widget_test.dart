@@ -5,26 +5,28 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+class Person {
+  String name = "";
+  int age = 0;
 
-import 'package:iptv/main.dart';
+  // 默认构造函数
+  Person(this.name, this.age);
+
+  // 命名构造函数，用于创建一个未指定年龄的Person
+  Person.withoutAge(this.name);
+
+  // 方法，用于打印Person的信息
+  void printInfo() {
+    print('Name: $name, Age: $age');
+  }
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // 使用默认构造函数初始化
+  Person person1 = Person('Alice', 30);
+  person1.printInfo(); // 输出: Name: Alice, Age: 30
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+  // 使用命名构造函数初始化
+  Person person2 = Person.withoutAge('Bob');
+  person2.printInfo(); // 输出: Name: Bob, Age: null
 }

@@ -1,3 +1,5 @@
 library iptv;
 
-export 'view.dart';
+export 'page/iptv_view.dart';
+export 'widgets/index.dart';
+export 'view/index.dart';

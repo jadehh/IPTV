@@ -7,6 +7,7 @@
  * @Desc     :
  */
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:iptv/common/index.dart';
@@ -20,6 +21,11 @@ class IptvController extends GetxController {
 
   /// 当前直播源
   Rx<Iptv> currentIptv = Iptv.empty.obs;
+
+
+
+  /// 当前频道源
+  RxInt currentChannel = 0.obs;
 
   /// 显示iptv信息
   RxBool iptvInfoVisible = false.obs;
@@ -58,24 +64,33 @@ class IptvController extends GetxController {
   }
 
   /// 刷新直播源列表
-  Future<void> refreshIptvList() async {
-    iptvGroupList = await IptvUtil.refreshAndGet();
+  Future<void> refreshIptvList({IPTVCallBack? callBack}) async {
+    try{
+      iptvGroupList = await IptvUtil.refreshAndGet(callBack);
+    }catch(e){
+      rethrow ;
+    }
   }
 
   /// 刷新节目单
-  Future<void> refreshEpgList() async {
-    epgList = await EpgUtil.refreshAndGet(iptvList.map((e) => e.tvgName).toList());
+  Future<void> refreshEpgList({EpgCallBack? callBack}) async {
+    try{
+      epgList = await EpgUtil.refreshAndGet(iptvList.map((e) => e.tvgName).toList());
+    }catch(e){
+      rethrow;
+    }
+
   }
 
   /// 手动输入频道号
   void inputChannelNo(String no) {
     confirmChannelTimer?.cancel();
-
     channelNo.value = channelNo.value + no;
     confirmChannelTimer = Timer(Duration(seconds: 4 - channelNo.value.length), () {
       final channel = int.tryParse(channelNo.value) ?? 0;
       final iptv = iptvList.firstWhere((e) => e.channel == channel, orElse: () => currentIptv.value);
       currentIptv = iptv.obs;
+      RefreshEvent.refreshVod();
       channelNo = ''.obs;
     });
   }

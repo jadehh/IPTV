@@ -1,12 +1,13 @@
 /// 常量
 class Constants {
   /// 直播源
-  static const iptvSource = 'https://ghp.ci/https://raw.githubusercontent.com/zhumeng11/IPTV/main/IPTV.m3u';
+  static const iptvSource = 'https://ghproxy.net/raw.githubusercontent.com/Guovin/TV/gd/output/result.m3u';
 
   /// 直播源缓存时间
   static const iptvSourceCacheKeepTime = 1000 * 60 * 60 * 24; // 24小时
 
   /// epg xml
+  // static const iptvEpgXml = 'http://epg.51zmt.top:8000/e.xml.gz';
   static const iptvEpgXml = 'https://live.fanmingming.com/e.xml';
 
   /// epg 刷新时间阈值（小时）

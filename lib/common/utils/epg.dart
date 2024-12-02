@@ -14,12 +14,11 @@ class EpgUtil {
   EpgUtil._();
 
   /// 获取远程epg xml
-  static Future<String> _fetchXml() async {
+  static Future<String> _fetchXml({EpgCallBack? callBack}) async {
     try {
       final url = IptvSettings.customEpgXml.isNotEmpty ? IptvSettings.customEpgXml : Constants.iptvEpgXml;
-
       _logger.debug('获取远程xml: $url');
-      final result = await RequestUtil.get(url);
+      final result = await RequestUtil.get(url,callBack: callBack);
       return result;
     } catch (e, st) {
       _logger.handle(e, st);
@@ -30,7 +29,7 @@ class EpgUtil {
 
   /// 获取缓存epg xml文件
   static Future<File> _getCacheXmlFile() async {
-    return File('${(await getApplicationCacheDirectory()).path}/epg.xml');
+    return File('${(await getApplicationSupportDirectory()).path}/epg.xml');
   }
 
   /// 获取缓存epg xml
@@ -49,7 +48,7 @@ class EpgUtil {
   }
 
   /// 刷新并获取epg xml
-  static Future<String> _refreshAndGetXml() async {
+  static Future<String> _refreshAndGetXml({EpgCallBack? callBack}) async {
     final now = DateTime.now();
     final cacheAt = DateTime.fromMillisecondsSinceEpoch(IptvSettings.epgXmlCacheTime);
 
@@ -68,7 +67,7 @@ class EpgUtil {
       }
     }
 
-    final xml = await _fetchXml();
+    final xml = await _fetchXml(callBack: callBack);
 
     final cacheFile = await _getCacheXmlFile();
     await cacheFile.writeAsString(xml);
@@ -141,7 +140,7 @@ class EpgUtil {
 
   /// 获取缓存文件
   static Future<File> _getCacheFile() async {
-    return File('${(await getApplicationCacheDirectory()).path}/epg.json');
+    return File('${(await getApplicationSupportDirectory()).path}/epg.json');
   }
 
   /// 获取缓存epg
@@ -162,10 +161,10 @@ class EpgUtil {
   }
 
   /// 刷新并获取epg
-  static Future<List<Epg>> refreshAndGet(List<String> filteredChannels) async {
+  static Future<List<Epg>> refreshAndGet(List<String> filteredChannels,{EpgCallBack? callBack}) async {
     if (!IptvSettings.epgEnable) return [];
 
-    final xml = await _refreshAndGetXml();
+    final xml = await _refreshAndGetXml(callBack: callBack);
 
     final hashcode = filteredChannels.map((str) => str.hashCode).reduce((value, element) => value ^ element);
 

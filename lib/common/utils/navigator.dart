@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iptv/common/event/index.dart';
 
 /// 路由工具
 class NavigatorUtil {
@@ -25,9 +26,10 @@ class NavigatorUtil {
             backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
             body: SafeArea(
               child: GestureDetector(
-                onTap: () {
+                onTap: () async{
                   // 恢复
                   Navigator.pop(context);
+                  RefreshEvent.showIptv();
                 },
                 child: Container(
                   color: Colors.transparent,

@@ -91,7 +91,7 @@ class UpdateController extends GetxController  {
     try {
       final path = await RequestUtil.download(
         url: '${Constants.githubProxy}${latestRelease.downloadUrl}',
-        directory: (await getApplicationCacheDirectory()).path,
+        directory: (await getApplicationSupportDirectory()).path,
         name: 'my_tv-latest.apk',
         onProgress: (percent) {
           _logger.debug('正在下载更新: ${percent.toInt()}%');

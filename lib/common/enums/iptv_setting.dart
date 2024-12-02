@@ -5,6 +5,9 @@ enum IptvSetting {
   /// 初始直播源序号
   initialIptvIdx,
 
+  /// 记录直播线路
+  iptvChannelList,
+
   /// 换台反转
   channelChangeFlip,
 
@@ -42,6 +45,9 @@ class IptvSettings {
 
   static int get initialIptvIdx => PrefsUtil.getInt(IptvSetting.initialIptvIdx.toString()) ?? 0;
   static set initialIptvIdx(int value) => PrefsUtil.setInt(IptvSetting.initialIptvIdx.toString(), value);
+
+  static List<String> get iptvChannelList => PrefsUtil.getStringList(IptvSetting.iptvChannelList.toString()) ?? [];
+  static set iptvChannelList(List<String> value) => PrefsUtil.setStringList(IptvSetting.iptvChannelList.toString(), value);
 
   static bool get channelChangeFlip => PrefsUtil.getBool(IptvSetting.channelChangeFlip.toString()) ?? false;
   static set channelChangeFlip(bool value) => PrefsUtil.setBool(IptvSetting.channelChangeFlip.toString(), value);

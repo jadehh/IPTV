@@ -10,13 +10,11 @@ class IptvUtil {
   IptvUtil._();
 
   /// 获取远程直播源
-  static Future<String> _fetchSource() async {
+  static Future<String> _fetchSource(IPTVCallBack? callBack) async {
     try {
-      final iptvSource =
-          IptvSettings.customIptvSource.isNotEmpty ? IptvSettings.customIptvSource : Constants.iptvSource;
-
+      final iptvSource =IptvSettings.customIptvSource.isNotEmpty ? IptvSettings.customIptvSource : Constants.iptvSource;
       _logger.debug('获取远程直播源: $iptvSource');
-      final result = await RequestUtil.get(iptvSource);
+      final result = await RequestUtil.get(iptvSource,callBack: callBack);
       return result;
     } catch (e, st) {
       _logger.handle(e, st);
@@ -27,7 +25,7 @@ class IptvUtil {
 
   /// 获取缓存直播源文件
   static Future<File> _getCacheFile() async {
-    return File('${(await getApplicationCacheDirectory()).path}/iptv.txt');
+    return File('${(await getApplicationSupportDirectory()).path}/iptv.txt');
   }
 
   /// 获取缓存直播源
@@ -59,6 +57,7 @@ class IptvUtil {
 
       final groupName = RegExp('group-title="(.*?)"').firstMatch(line)?.group(1) ?? '其他';
       final name = line.split(',').last;
+      final logo = RegExp('tvg-logo="(.*?)"').firstMatch(line)?.group(1) ?? '';
 
       if (IptvSettings.iptvSourceSimplify) {
         if (!name.toLowerCase().startsWith('cctv') && !name.endsWith('卫视')) continue;
@@ -69,21 +68,29 @@ class IptvUtil {
         groupList.add(group);
         return group;
       });
-      channel = channel + 1;
-      final iptv = Iptv(
-        idx: group.list.length,
-        channel: channel,
-        groupIdx: group.idx,
-        name: name,
-        url: lines[lineIdx + 1],
-        tvgName: RegExp('tvg-name="(.*?)"').firstMatch(line)?.group(1) ?? name,
-      );
 
-      group.list.add(iptv);
+      final url =  lines[lineIdx + 1];
+
+      if(group.list.any((iptv)=>iptv.name == name)){
+        group.list.elementAt( group.list.indexWhere((element) => element.name == name)).urlList.add(url);
+      }else{
+        channel = channel + 1;
+        final iptv = Iptv(
+          idx: group.list.length,
+          channel: group.list.length+1,
+          groupIdx: group.list.length+1,
+          name: name,
+          urlList:[url],
+          tvgName: RegExp('tvg-name="(.*?)"').firstMatch(line)?.group(1) ?? name,
+          logo:logo,
+        );
+        group.list.add(iptv);
+      }
     }
-
+    if(IptvSettings.iptvChannelList.length != channel){
+      IptvSettings.iptvChannelList = List<String>.filled(channel, "");
+    }
     _logger.debug('解析m3u完成: ${groupList.length}个分组, $channel个频道');
-
     return groupList;
   }
 
@@ -121,8 +128,9 @@ class IptvUtil {
           channel:channel,
           groupIdx: group.idx,
           name: name,
-          url: url,
+          urlList: [url],
           tvgName: name,
+          logo: ""
         );
 
         group.list.add(iptv);
@@ -150,24 +158,22 @@ class IptvUtil {
   }
 
   /// 刷新并获取直播源
-  static Future<List<IptvGroup>> refreshAndGet() async {
+  static Future<List<IptvGroup>> refreshAndGet(IPTVCallBack? callBack) async {
     final now = DateTime.now().millisecondsSinceEpoch;
 
     if (now - IptvSettings.iptvSourceCacheTime < IptvSettings.iptvSourceCacheKeepTime) {
       final cache = await _getCache();
-
       if (cache.isNotEmpty) {
         _logger.debug('使用缓存直播源');
         return _parseSource(cache);
       }
     }
 
-    final source = await _fetchSource();
-
+    IptvSettings.iptvChannelList = [];
+    final source = await _fetchSource(callBack);
     final cacheFile = await _getCacheFile();
     await cacheFile.writeAsString(source);
     IptvSettings.iptvSourceCacheTime = now;
-
     return _parseSource(source);
   }
 }

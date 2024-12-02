@@ -15,7 +15,7 @@ import 'package:iptv/common/index.dart';
 class EventBus {
   static EventBus? _instance;
 
-  final _logger = LoggerUtil.create(['播放器']);
+  final _logger = LoggerUtil.create(['Event']);
 
 
   static EventBus get instance {

@@ -10,3 +10,4 @@ export 'prefs.dart';
 export 'throttle.dart';
 export 'navigator.dart';
 export 'http_server.dart';
+export 'extension.dart';

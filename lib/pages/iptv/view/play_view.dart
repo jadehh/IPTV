@@ -1,5 +1,5 @@
 /*
- * @File     : play_controller.dart
+ * @File     : play_view.dart
  * @Author   : jade
  * @Date     : 2024/10/9 16:34
  * @Email    : jadehh@1ive.com
@@ -11,11 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
-Widget playerControls(VideoState videoState) {
-  return buildControls(videoState.context.orientation == Orientation.portrait, videoState);
+Widget playView(VideoState videoState) {
+  return buildWidget(videoState.context.orientation == Orientation.portrait, videoState);
 }
 
-Widget buildControls( bool isPortrait, VideoState videoState,){
+Widget buildWidget( bool isPortrait, VideoState videoState,){
   return Stack(
       children: [
         Container(),
@@ -26,8 +26,8 @@ Widget buildControls( bool isPortrait, VideoState videoState,){
             builder: (_, s){
               return Visibility(
                 visible: s.data ?? false,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child:  const Center(
+                  child: CircularProgressIndicator(color: Colors.white,strokeWidth: 3,),
                 ),
               );
             }

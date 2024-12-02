@@ -7,3 +7,4 @@ export 'restart.dart';
 export 'easy_keyboard_listener.dart';
 export 'two_dimension_list_view.dart';
 export 'delay_renderer.dart';
+export 'multi_channel_list_view.dart';
